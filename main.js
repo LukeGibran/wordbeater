@@ -14,6 +14,7 @@ let time = currentLevel;
 let score = 0;
 let isPlaying;
 let hScore = 0;
+let start = false;
 
 const wordInput = document.querySelector('#word-input');
 const currentWord = document.querySelector('#current-word');
@@ -24,6 +25,7 @@ const seconds = document.querySelector('#seconds');
 const difficulty = document.getElementsByTagName('select');
 const highscore = document.querySelector('#highscore');
 const dhayang = document.querySelector('#dhayang');
+const startBtn = document.querySelector('#start');
 
 const words = [
     'family',
@@ -57,8 +59,10 @@ const words = [
   // Initialize Game
 
   function init(){
+
       //Show number of seconds in UI
       seconds.innerHTML = currentLevel;
+      if(start != false){
       // Load word from array
       showWord(words);
       //Start matchin on word input
@@ -67,7 +71,7 @@ const words = [
       setInterval(countdown, 1000);
       //check geame status
       setInterval(checkStatus, 50)
-
+      }
     }
 
       // Start Match
@@ -92,23 +96,28 @@ const words = [
             
 
           }
+
+        
       }
 
       //Match currentWord to wordInput
       function matchwords(){
         if(wordInput.value === currentWord.innerHTML){
+            message.className = 'mt-3';
             message.innerHTML = 'Correct!';
             return true;
         }else{
             message.innerHTML = '';
             return false;
         }
+        
       }
       // Pick & show random word
       function showWord(words){
         const randIndex = Math.floor(Math.random() * words.length);
 
         currentWord.innerHTML = words[randIndex];
+        
       }
 
       //countdown timer
@@ -123,12 +132,14 @@ const words = [
           }
 
           timeDisplay.innerHTML = time;
+        
       }
   
       //check game status
       function checkStatus(){
           if(!isPlaying && time === 0){
               message.innerHTML = 'Game Over!';
+              message.className = 'mt-3 bg-secondary p-3 mr-5 ml-5';
               score = -1;
               highscore.innerHTML = hScore;
               dhayang.innerHTML = 'I LOVE YOU DHAYANG!';
@@ -148,8 +159,15 @@ const words = [
         }
 
         seconds.innerHTML = currentLevel;
-
+        time = currentLevel + 1;
       }
 
+      function startOrPause(){
+        start = true;
+        console.log(start);
+        init();
+        startBtn.setAttribute('hidden', 'hidden');
+
+      }
      
 
